@@ -1,27 +1,20 @@
-import React from 'react';
-import TreePage from '../components/Tree';
-import EditableTable from '../components/TableEdit';
-import { connect } from 'react-redux';
+import React from "react";
+import TreePage from "../components/Tree";
+import EditableTable from "../components/TableEdit";
 
-const MergerTreeTableEdit =({data})=> {
+const MergerTreeTableEdit = ({ match }) => {
 
-	return(
-        <>
-            <TreePage />
-            <EditableTable />
-        </>
-      );
-}
+  const [checks, setChecks] = React.useState([+match.params.clientId]);
 
-const mapStateToProps =(state)=> {
-  return {
-    data: state.app.data,
-  }
-}
-const mapDispatchToProps =(dispatch)=> {
-  return {
-   
-  }
-}
+  const set = checked => {
+    setChecks(checked); 
+  };
+  return (
+    <>
+      <TreePage clientId={match.params.clientId} onChangeCheckbox={set} />
+      <EditableTable clientId={match.params.clientId} checks={checks} />
+    </>
+  );
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(MergerTreeTableEdit);
+export default MergerTreeTableEdit;

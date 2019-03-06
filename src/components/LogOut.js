@@ -1,15 +1,11 @@
 import React, {Component} from 'react';
-import PropTypes from 'prop-types';
+import T from 'prop-types';
 import {connect} from 'react-redux';
 import {Redirect} from 'react-router-dom';
 import {logOut} from '../actions/AuthAction';
 
 class Logout extends Component {
-	
-   static propTypes = {
 
-    logout: PropTypes.func
-  }
 
   componentDidMount() {
     this.props.logOut()
@@ -20,6 +16,9 @@ class Logout extends Component {
   }
 }
 
+Logout.propTypes = {
+  logOut: T.func.isRequired
+}
 
 function mapDispatchToProps(dispatch) {
   return {

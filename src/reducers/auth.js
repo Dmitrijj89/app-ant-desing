@@ -1,5 +1,5 @@
 import { LOGIN, LOGOUT, LOG_ERROR } from '../constants';
-import { getAvtorizetion } from '../selectors';
+
 
 const initialState = {
   user: null,

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Form, Icon, Input, Button } from 'antd';
 import 'antd/dist/antd.css';
 import styled from 'styled-components';
+import T from 'prop-types';
 
 const Div = styled.div`
 max-width: 400px;
@@ -57,5 +58,10 @@ const isEmail = /^[A-z0-9][a-z0-9-_]+@([a-z]|[a-z0-9]?[a-z0-9-]+[a-z0-9])\.[a-z0
       }
   }
   const AuthForm = Form.create({ name: 'normal_login' })(Auth);
+
+  Auth.propTypes = {
+    logIn: T.func.isRequired,
+    errorMsg: T.string,
+  }
 
   export default AuthForm;

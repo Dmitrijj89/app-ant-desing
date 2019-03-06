@@ -47,7 +47,7 @@ class App extends Component {
       routes = (
        <Switch> 
         <PrivateRoute path="/list1" component={Table} />
-        <PrivateRoute path="/list2" component={MergerTreeTableEdit} />
+        <PrivateRoute path="/list2/:clientId" component={MergerTreeTableEdit} />
         <PrivateRoute path="/logout" component={Logout} />
         <Redirect to="/list1" />
       </Switch>
