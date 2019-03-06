@@ -11,9 +11,7 @@ const initialState = {
   export default (state = initialState, action) => {
     switch (action.type) {
         case ITEMS_START:
-		   return {
-		   	 ...state, loading: true
-		   }
+        return { ...state, selected: action.selected }
 		case ITEMS_SUCCESS:
 		   return {
 		   	 ...state, loading: false, data: action.data

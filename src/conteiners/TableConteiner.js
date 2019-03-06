@@ -6,7 +6,7 @@ const Table =({data})=> {
 
 	return(
         
-            <TablePage data={data} />
+            <TablePage />
         
       );
 }

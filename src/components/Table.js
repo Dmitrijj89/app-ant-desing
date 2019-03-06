@@ -1,5 +1,8 @@
 import React from 'react';
 import { Table, Tag } from 'antd';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { updateSelected } from '../actions/AppAction';
 
 const { Column } = Table;
 //const { data } = this.props;
@@ -21,6 +24,12 @@ const TableList =({data})=> {
         title="Name"
         dataIndex="name"
         key="name"
+        render={ (name, record) => <Link
+          to="/list2"
+          onClick={() => this.updSelected([record.id])}
+        >
+          {name}
+      </Link>}
       />
     <Column
       title="Condition"
@@ -57,4 +66,7 @@ const TableList =({data})=> {
  
  
   
-  export default TableList;
+ export default connect(state => ({
+  data: state.app.data,
+  selected: state.selected,
+}), { updSelected: updateSelected })(TableList);

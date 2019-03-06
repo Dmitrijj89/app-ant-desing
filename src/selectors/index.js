@@ -1,6 +1,5 @@
 export function loginHandler(params) {
-  
-    if (
+ if (
       params.mail.toLowerCase() !== 'admin@mail.ru' ||
       params.password !== '12345'
     ) {
@@ -8,9 +7,4 @@ export function loginHandler(params) {
     }
   
     return true
-  }
-
-  export function getAvtorizetion() {
-      const userId = localStorage.getItem('session');
-      return userId ? +userId : null;
   }

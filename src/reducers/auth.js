@@ -2,7 +2,6 @@ import { LOGIN, LOGOUT, LOG_ERROR } from '../constants';
 import { getAvtorizetion } from '../selectors';
 
 const initialState = {
-  userId: getAvtorizetion(),
   user: null,
   errorMsg: '',
 }
@@ -13,7 +12,6 @@ export default (state = initialState, action) => {
       return {
         ...state,
         user: {
-          userId: action.payload.userId,
           mail: action.payload.mail
         },
         errorMsg: '',

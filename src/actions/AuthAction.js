@@ -7,7 +7,6 @@ export function logIn(params) {
       dispatch({
         type: LOGIN,
         payload: {
-          userId: params.userId,
           mail: params.mail
         },
       });localStorage.setItem('session', params);
@@ -24,7 +23,6 @@ export function logIn(params) {
 }
 
 export function logOut() {
-  localStorage.removeItem('session');
   return {
     type: LOGOUT,
   }

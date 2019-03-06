@@ -1,10 +1,11 @@
 import {ITEMS_START, ITEMS_SUCCESS, ITEMS_ERROR} from '../constants';
 
-export function itemsStart() {
+export function updateSelected(selected) {
 	return {
-		type: ITEMS_START
-	}
-}
+	  type: ITEMS_START,
+	  payload: { selected },
+	};
+  }
 
 export function itemsSuccess(data) {
 	return {
