@@ -1,13 +1,17 @@
 import React, { Component } from 'react';
 import { Switch, Route, NavLink, Redirect, withRouter } from 'react-router-dom';
 import PrivateRoute from './conteiners/PrivateRoute';
-//import LoginContainer from './containers/LoginContainer';
 import AuthForm from './conteiners/AuthConteiner';
 import Table from './conteiners/TableConteiner';
 import MergerTreeTableEdit from './conteiners/MergerTreeTableEdit';
 import Logout from './components/LogOut';
+import { Button } from "antd";
 import {connect} from 'react-redux';
+import styled from 'styled-components';
 import './App.css';
+
+const P = styled.p`
+  margin-left: 85%;`;
 
 class App extends Component {
   
@@ -15,24 +19,28 @@ class App extends Component {
 
     
     let links = (
-      <li>
+      
        <NavLink to="/login" exact ></NavLink>
-     </li>
+     
      )
  
      if (this.props.user) {
        links = (
-            <React.Fragment>
-              <li>
-                 <NavLink to="/list1">Страница 1</NavLink>
-              </li>
-              <li>
-                 <NavLink to="/list2">Страница 2</NavLink>
-              </li>
-              <li>
-                  <NavLink to="/logout">Выйти</NavLink>
-              </li>
-        </React.Fragment>
+            <>
+              
+                 <NavLink to="/list1"></NavLink>
+    
+                 <NavLink to="/list2"></NavLink>
+           
+                <NavLink to="/logout">
+                  <P>
+                    <Button type="primary" icon="logout">
+                       Выйти
+                    </Button>
+                  </P>
+                </NavLink>
+            
+           </>
        )
      } 
      
@@ -57,11 +65,9 @@ class App extends Component {
 
     return (
             <div>
-              <ul>
                 { links }
-              </ul>
-            <hr/>
-              { routes }
+
+                { routes }
             </div>
           );
   }

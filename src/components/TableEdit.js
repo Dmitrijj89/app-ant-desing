@@ -1,7 +1,9 @@
 import React from "react";
-import { Table, Input, InputNumber, Popconfirm, Form, Tag, Checkbox, Button } from "antd";
-import { data } from "../api";
+import { Table, Input, Popconfirm, Form, Tag, Checkbox, Button } from "antd";
 import { withRouter } from 'react-router-dom';
+import { connect } from "react-redux";
+import {updateData} from "../actions/AppAction";
+import { isEmail } from '../selectors';
 import T from 'prop-types';
 
 const FormItem = Form.Item;
@@ -16,11 +18,55 @@ const EditableRow = ({ form, index, ...props }) => (
 const EditableFormRow = Form.create()(EditableRow);
 
 class EditableCell extends React.Component {
+
   getInput = () => {
-    if (this.props.inputType === "number") {
-      return <InputNumber />;
+    if (this.props.inputType === "checkbox") {
+      return <Checkbox />;
     }
     return <Input />;
+  };
+
+  getValid = (dataIndex) => {
+    const initRules = [{
+      required: true,
+      message: 'Поле не может быть пустым!',
+    }];
+
+    if (dataIndex === 'name') {
+      initRules.push({
+        min: 2,
+        message: 'Слишком короткая запись!',
+      });
+    }
+
+    if (dataIndex === 'email') {
+      initRules.push({
+        type: 'email',
+        pattern: isEmail,
+        message: 'Введите правильный Email !',
+      });
+    }
+    
+    if (dataIndex === 'addresses') {
+      initRules.push({
+        validator: this.addressesValidate,
+      });
+    }
+    return initRules;
+  }
+
+  addressesValidate = (rule, addresses, callback) => {
+    const errors = [];
+    if (typeof (addresses) === 'string') {
+      addresses.split(',').forEach((addresses) => {
+        if (! /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/.test(addresses)) {
+          errors.push(
+            new Error('Введите корректный адрес сайта!'),
+          );
+        };
+      });
+    }
+    callback(errors);
   };
 
   render() {
@@ -33,6 +79,7 @@ class EditableCell extends React.Component {
       index,
       ...restProps
     } = this.props;
+  
     return (
       <EditableContext.Consumer>
         {form => {
@@ -42,10 +89,7 @@ class EditableCell extends React.Component {
               {editing ? (
                 <FormItem style={{ margin: 0 }}>
                   {getFieldDecorator(dataIndex, {
-                    rules: [{
-                        required: true,
-                        message: `Please Input ${title}!`
-                      }],
+                    rules: this.getValid(dataIndex),
                     initialValue: record[dataIndex],
                   })(this.getInput())}
                 </FormItem>
@@ -62,7 +106,7 @@ class EditableTable extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { data, editingKey: "" };
+    this.state = { data: this.props.data, editingKey: "" };
     this.columns = [
       {
         title: "ID",
@@ -73,6 +117,7 @@ class EditableTable extends React.Component {
       {
         title: "Name",
         dataIndex: "name",
+        min:2,
         width: "25%",
         editable: true
       },
@@ -146,10 +191,11 @@ class EditableTable extends React.Component {
   isEditing = record => record.id === this.state.editingKey;
 
   getData = () => {
+
     const newData = [];
 
     this.props.checks.forEach(id => {
-      const current = data.filter(item => item.id === id);
+      const current = this.props.data.filter(item => item.id === id);
       newData.push(current[0]);
     });
 
@@ -164,23 +210,19 @@ class EditableTable extends React.Component {
     form.validateFields((error, row) => {
       if (error) {
         return;
-      }
-      const newData = [...this.state.data];
-      const index = newData.findIndex(item => id === item.id);
-      if (index > -1) {
-        const item = newData[index];
-        newData.splice(index, 1, {
-          ...item,
-          ...row
-        });
-        this.setState({ data: newData, editingKey: "" });
+      }  
+        const addresses = this.coversionValueInput(row);
+        this.setState({ editingKey: "" });
+        this.props.updateData({ ...row, id, addresses});
         this.handlePushList1();
-      } else {
-        newData.push(row);
-        this.setState({ data: newData, editingKey: "" });
-        this.handlePushList1();
-      }
     });
+  }
+
+  coversionValueInput = (row) => {
+    if (row.addresses && typeof (row.addresses) === 'string') {
+      return row.addresses.split(',');
+    }
+    return row
   }
 
   handlePushList1=()=> {
@@ -207,7 +249,7 @@ class EditableTable extends React.Component {
         ...col,
         onCell: record => ({
           record,
-          inputType: col.dataIndex === "age" ? "number" : "text",
+          inputType: col.dataIndex === "condition" ? "checkbox" : "text",
           dataIndex: col.dataIndex,
           title: col.title,
           editing: this.isEditing(record)
@@ -229,7 +271,7 @@ class EditableTable extends React.Component {
           }}
         />
         <Button type="primary" onClick={this.handlePushList1} >
-        К списку
+            К списку
         </Button>
       </>
     );
@@ -246,7 +288,26 @@ EditableTable.propTypes = {
       addresses: T.arrayOf(T.string),
     }),
   ).isRequired,
-  getData: T.func.isRequired,
+  getData: T.func,
+  record: T.object,
+  editable: T.bool,
+  inputType: T.string,
+  dataIndex: T.string,
+  title: T.string,
 }
 
-export default withRouter(EditableTable);
+const mapStateToProps = state => {
+  return {
+    data: state.app.data
+  };
+};
+
+const mapDispatchToProps = (dispatch) => ({
+  updateData: (newData) => dispatch(updateData(newData))
+})
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(EditableTable));
+

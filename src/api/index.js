@@ -2,23 +2,23 @@ export const data = [
     {
       "id": 1,
       "name": "Аркада",
-      "condition": true,
+      "condition": false,
       "email": "arcada.info@mail.com",
-      "addresses": ["arkada.game.com", "sale.arkada.info"]
+      "addresses": ["arkada.game.com","sale.arkada.info"]
     },
     {
       "id": 2,
       "name": "Ели-пили",
-      "condition": false,
+      "condition": true,
       "email": "eda@mail.com",
-      "addresses": ["food.ru", "gurman.eda.com"]
+      "addresses": ["food.ru","gurman.eda.com"]
     },
     {
       "id": 3,
       "name": "Автомир",
       "condition": false,
       "email": "avto.info@mail.com",
-      "addresses": ["world-avto.com", "avto-sale.ru"]
+      "addresses": ["world-avto.com","avto-sale.ru"]
     }
   ];
   

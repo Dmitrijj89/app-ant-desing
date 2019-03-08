@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Form, Icon, Input, Button } from 'antd';
 import 'antd/dist/antd.css';
 import styled from 'styled-components';
+import { isEmail } from '../selectors';
 import T from 'prop-types';
 
 const Div = styled.div`
@@ -11,9 +12,7 @@ margin: 10rem auto;`;
 const P = styled.p`
 color: red;
 position: fixed
-margin-top: 6rem;;`;
-
-const isEmail = /^[A-z0-9][a-z0-9-_]+@([a-z]|[a-z0-9]?[a-z0-9-]+[a-z0-9])\.[a-z0-9]{2,10}(?:\.[a-z]{2,10})?$/;
+margin-top: 6rem;`;
   
   class Auth extends Component {
   

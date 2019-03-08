@@ -1,22 +1,15 @@
-import {ITEMS_START, ITEMS_SUCCESS, ITEMS_ERROR} from '../constants';
+import { ITEMS_SUCCESS } from '../constants';
 
-export function updateSelected(selected) {
+export function updateData({id, name, condition, email, addresses}) {
+	console.log('098if',email, "%^",addresses )
 	return {
-	  type: ITEMS_START,
-	  payload: { selected },
+	  type: ITEMS_SUCCESS,
+		payload: {
+			id,
+			name,
+			condition,
+			email,
+			addresses
+		}
 	};
   }
-
-export function itemsSuccess(data) {
-	return {
-		type: ITEMS_SUCCESS,
-		data
-	}
-}
-
-export function itemsError(e) {
-	return {
-		type: ITEMS_ERROR,
-		error: e
-	}
-}
